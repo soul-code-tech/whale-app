@@ -22,8 +22,10 @@ header h1{font-size:17px}
 .pills::-webkit-scrollbar{display:none}
 .pill{flex:0 0 auto;background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:16px;padding:6px 12px;font-size:13px;cursor:pointer}
 .pill.on{background:var(--acc);border-color:var(--acc);color:#04121f;font-weight:700}
-#chart{height:44vh;min-height:260px;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-top:2px}
+#chart{height:min(44vh,420px);min-height:230px;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-top:2px}
 h2{font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.6px;margin:14px 4px 8px}
+.twrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.twrap table{min-width:100%}
 table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 td,th{padding:8px 8px;border-bottom:1px solid var(--line);font-size:12.5px;text-align:left;white-space:nowrap}
 th{color:var(--dim);font-weight:600;font-size:10.5px;text-transform:uppercase}
@@ -39,6 +41,12 @@ tr.click{cursor:pointer}
 #status{color:var(--dim);font-size:12px;padding:10px 4px;text-align:center;min-height:20px}
 .kselect{background:var(--card);border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:8px 12px;font-size:14px;width:100%;margin:6px 0}
 .wrbadge{font-size:11px;color:var(--dim)}
+@media (max-width:430px){
+  td,th{padding:6px 6px;font-size:12px}
+  header h1{font-size:15px}
+  .cta a{font-size:12.5px;padding:12px 4px}
+  #aiCard .x{font-size:12.5px}
+}
 </style>
 </head>
 <body>
@@ -51,9 +59,9 @@ tr.click{cursor:pointer}
   <div id="chart"></div>
   <p id="status"></p>
   <h2>Позиции кита — вход · стоп · плечо · PnL</h2>
-  <table id="posT"><tbody><tr><td class="dim">Загружаю…</td></tr></tbody></table>
+  <div class="twrap"><table id="posT"><tbody><tr><td class="dim">Загружаю…</td></tr></tbody></table></div>
   <h2>Сделки кита — вход · долив · тейк · стоп</h2>
-  <table id="trT"><tbody><tr><td class="dim">—</td></tr></tbody></table>
+  <div class="twrap"><table id="trT"><tbody><tr><td class="dim">—</td></tr></tbody></table></div>
 </div>
 <div class="cta">
   <a class="a1" id="obA" href="#" target="_blank">🤖 Копи-трейдинг</a>
@@ -87,7 +95,10 @@ async function hl(p){
 
 // ==== кошельки: URL → wallets.json (обновляет бот) ====
 let WALLETS = [], ALL_WALLETS = [];
-let currentKit = null, wrOnly = true;
+let currentKit = null;
+
+// мусорные тикеры Hyperliquid (@107 и просто цифры) не показываем
+const junkCoin = c => /^@/.test(c) || /^\d+$/.test(c);
 
 async function loadWallets(){
   const qsW = (qs.get('w')||'').split(',').filter(a=>/^0x[0-9a-fA-F]{40}$/.test(a)).slice(0,25);
@@ -104,9 +115,9 @@ async function loadWallets(){
 }
 
 function applyWalletFilter(){
-  // только активные киты; при включённом фильтре — ещё и WR ≥ 70%
-  let list = ALL_WALLETS.filter(w=>w.active !== false);
-  if (wrOnly) list = list.filter(w=>(w.wr === undefined) || (w.wr >= MIN_WR));
+  // только активные киты с винрейтом от 70% — по умолчанию, без переключателя
+  let list = ALL_WALLETS.filter(w=>w.active !== false)
+                        .filter(w=>(w.wr === undefined) || (w.wr >= MIN_WR));
   if (!list.length) list = ALL_WALLETS;   // пусто не оставляем
   WALLETS = list;
   if (currentKit !== null && !WALLETS[currentKit]) currentKit = 0;
@@ -137,7 +148,7 @@ const fmtUsd = v => { v=+v||0; const a=Math.abs(v);
   if (a>=1e3) return (v/1e3).toFixed(1)+'K$';
   return v.toFixed(0)+'$'; };
 const fmtPx = p => { p=+p;
-  if (p>=1000)  return p.toLocaleString('en-US',{maximumFractionDigits:2});
+  if (p>=1000)  return String(Math.round(p)).replace(/\B(?=(\d{3})+(?!\d))/g," ");
   if (p>=1)     return p.toFixed(4);
   if (p>=0.001) return p.toFixed(6);
   return p ? p.toPrecision(4) : '0'; };
@@ -207,6 +218,8 @@ async function loadAll(){
                    lev:(p.leverage && p.leverage.value) || 1, upnl:+p.unrealizedPnl||0});
       }
   } catch(e){}
+  fills = fills.filter(f=>!junkCoin(f.coin));
+  poss = poss.filter(p=>!junkCoin(p.coin));
   fills.sort((a,b)=>b.t-a.t);
   if (!coin || !fills.some(f=>f.coin===coin) && !poss.some(p=>p.coin===coin)) coin = topCoin();
   renderPositions(); renderCoinPills(); renderTrades(); loadCandles();
@@ -334,11 +347,6 @@ async function loadCandles(){
 
 function renderTf(){
   const el = document.getElementById('tfs'); el.innerHTML='';
-  const wr = document.createElement('button');
-  wr.className = 'pill' + (wrOnly ? ' on' : '');
-  wr.textContent = '🎯 только WR ≥ ' + MIN_WR + '%';
-  wr.onclick = ()=>{ wrOnly=!wrOnly; applyWalletFilter(); renderKitSelect(); currentKit=null; pickKit(0); };
-  el.appendChild(wr);
   [['15m','15 мин'],['1h','1 час'],['4h','4 часа']].forEach(([v,label])=>{
     const b = document.createElement('button');
     b.className = 'pill' + (tf===v ? ' on' : '');
