@@ -151,14 +151,17 @@ function setStat(s){ document.getElementById('status').textContent = s || ''; }
 // ==== индекс страха и жадности ====
 const FG_EMOJI = v => v<25?'😱':v<45?'😨':v<55?'⚖️':v<75?'😏':'🤑';
 const FG_NAME  = v => v<25?'паника':v<45?'страх':v<55?'нейтрально':v<75?'жадность':'эйфория';
+function setFG(v, name){
+  document.getElementById('fg').textContent = `🌡 ${FG_EMOJI(v)} ${v} · ${name || FG_NAME(v)}`;
+}
 async function loadFG(){
   try {
     const r = await fetch('https://api.alternative.me/fng/?limit=1');
     if (!r.ok) return;
     const d = (await r.json()).data[0];
-    const v = +d.value;
-    document.getElementById('fg').textContent = `🌡 ${FG_EMOJI(v)} ${v} · ${FG_NAME(v)}`;
+    setFG(+d.value);
   } catch(e){}
+  // прямой запрос не дошёл — останется запасное значение из content.json
 }
 
 // ==== AI-инсайт дня (content.json обновляет бот) ====
@@ -172,6 +175,8 @@ async function loadInsight(){
     document.getElementById('aiX').textContent = d.text;
     document.getElementById('aiD').textContent = 'по данным рынка · ' + (d.date || '');
     document.getElementById('aiCard').style.display = 'block';
+    if (d.fg !== undefined && document.getElementById('fg').textContent.indexOf('…') >= 0)
+      setFG(+d.fg, d.fgn);
   } catch(e){}
 }
 
