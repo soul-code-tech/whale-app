@@ -8,6 +8,30 @@
   "active": true
  },
  {
+  "addr": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
+  "name": "Кит 0x8af7…",
+  "wr": 66,
+  "n": 599,
+  "pnl": 132721.79,
+  "active": true
+ },
+ {
+  "addr": "0xd47587702a91731dc1089b5db0932cf820151a91",
+  "name": "Кит 0xd475…",
+  "wr": 78,
+  "n": 2000,
+  "pnl": 195810.33,
+  "active": true
+ },
+ {
+  "addr": "0xe867fbdad3291530e41530301ecb77693850c78e",
+  "name": "Кит 0xe867…",
+  "wr": 82,
+  "n": 1078,
+  "pnl": 39199.62,
+  "active": true
+ },
+ {
   "addr": "0x9794bbbc222b6b93c1417d01aa1ff06d42e5333b",
   "name": "Кит 0x9794…",
   "wr": 88,
@@ -48,22 +72,6 @@
   "active": false
  },
  {
-  "addr": "0x13c50dcdee4bbcba71baf578b345cdd35c7928be",
-  "name": "Кит 0x13c5…",
-  "wr": 67,
-  "n": 1883,
-  "pnl": 841870.26,
-  "active": false
- },
- {
-  "addr": "0x8af700ba841f30e0a3fcb0ee4c4a9d223e1efa05",
-  "name": "Кит 0x8af7…",
-  "wr": 67,
-  "n": 585,
-  "pnl": 132722.35,
-  "active": true
- },
- {
   "addr": "0xcfdb74a8c080bb7b4360ed6fe21f895c653efff4",
   "name": "Кит 0xcfdb…",
   "wr": 94,
@@ -72,19 +80,35 @@
   "active": false
  },
  {
-  "addr": "0xd47587702a91731dc1089b5db0932cf820151a91",
-  "name": "Кит 0xd475…",
-  "wr": 78,
-  "n": 2000,
-  "pnl": 195810.33,
+  "addr": "0x5d2f4460ac3514ada79f5d9838916e508ab39bb7",
+  "name": "Кит 0x5d2f…",
+  "wr": 100,
+  "n": 582,
+  "pnl": 941153.35,
   "active": true
  },
  {
-  "addr": "0xe867fbdad3291530e41530301ecb77693850c78e",
-  "name": "Кит 0xe867…",
-  "wr": 81,
-  "n": 1182,
-  "pnl": 38567.05,
+  "addr": "0x7dacca323e44f168494c779bb5e7483c468ef410",
+  "name": "Кит 0x7dac…",
+  "wr": 100,
+  "n": 2000,
+  "pnl": 408169.89,
+  "active": false
+ },
+ {
+  "addr": "0x1419e75330c71ce463102e6a1eb62fe80b412d5f",
+  "name": "Кит 0x1419…",
+  "wr": 100,
+  "n": 324,
+  "pnl": 458598.46,
+  "active": false
+ },
+ {
+  "addr": "0x8e096995c3e4a3f0bc5b3ea1cba94de2aa4d70c9",
+  "name": "Кит 憨巴小龙",
+  "wr": 76,
+  "n": 996,
+  "pnl": 147624.86,
   "active": true
  }
 ]
