@@ -27,16 +27,8 @@
   "addr": "0x5d2f4460ac3514ada79f5d9838916e508ab39bb7",
   "name": "Кит 0x5d2f…",
   "wr": 100,
-  "n": 582,
-  "pnl": 1027947.41,
-  "active": true
- },
- {
-  "addr": "0x8e096995c3e4a3f0bc5b3ea1cba94de2aa4d70c9",
-  "name": "Кит 憨巴小龙",
-  "wr": 76,
-  "n": 996,
-  "pnl": 147624.86,
+  "n": 577,
+  "pnl": 802472.02,
   "active": true
  },
  {
@@ -88,19 +80,19 @@
   "active": false
  },
  {
-  "addr": "0x1419e75330c71ce463102e6a1eb62fe80b412d5f",
-  "name": "Кит 0x1419…",
-  "wr": 100,
-  "n": 324,
-  "pnl": 458598.46,
-  "active": false
- },
- {
   "addr": "0x7dacca323e44f168494c779bb5e7483c468ef410",
   "name": "Кит 0x7dac…",
   "wr": 100,
   "n": 2000,
   "pnl": 408169.89,
+  "active": false
+ },
+ {
+  "addr": "0x1419e75330c71ce463102e6a1eb62fe80b412d5f",
+  "name": "Кит 0x1419…",
+  "wr": 100,
+  "n": 324,
+  "pnl": 458598.46,
   "active": false
  },
  {
